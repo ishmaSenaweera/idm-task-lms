@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class AuthController extends Controller
 {
@@ -38,17 +39,17 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         // Validate
-        $feilds = $request->validate([
+        $fields = $request->validate([
             'name' => ['required'],
             'email' => ['required', 'email', 'unique:users'],
             'password' => ['required', 'min:6'],
-            'role' => ['required', 'in:Admin,Teacher,Academic Head,Student']
+            'role' => ['required', Rule::in(['Admin,Teacher,Academic Head, Student'])]
         ]);
 
         try {
 
             // Register
-            User::create($feilds);
+            User::create($fields);
             return back()->with('success', 'User Registered Successfully!');
         } catch (\Exception $e) {
 
