@@ -4,63 +4,58 @@ namespace App\Policies;
 
 use App\Models\Course;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Auth\Access\Response;
 
 class CoursePolicy
 {
     /**
-     * Determine whether the user can view any models.
+     * All users can view courses.
      */
-    public function viewAny(User $user): bool
+    public function view(User $user)
     {
-        //
+        return in_array($user->role, ['Admin', 'Teacher', 'Academic Head', 'Student']);
     }
 
     /**
-     * Determine whether the user can view the model.
+     * Only admin or academic head can create a course.
      */
-    public function view(User $user, Course $course): bool
+    public function create(User $user)
     {
-        //
+        return in_array($user->role, ['Admin', 'Academic Head']);
     }
 
     /**
-     * Determine whether the user can create models.
+     * Admin can update a course and academic head can update in draft mode / if he published a course within 6 hours from published time.
      */
-    public function create(User $user): bool
+    public function update(User $user, Course $course)
     {
-        //
+        if ($user->role === 'Admin') {
+            return true;
+        }
+
+        if ($user->role === 'Academic Head') {
+            // Allow update if course is in draft or within 6 hours of publishing
+            return $course->status === 'draft' || ($course->status === 'publish' && $course->published_at->diffInHours(Carbon::now()) <= 6);
+        }
+
+        return false;
     }
 
     /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, Course $course): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can delete the model.
+     * Admin can delete a course and academic head can delete in draft mode / if he published a course within 6 hours from published time.
      */
     public function delete(User $user, Course $course): bool
     {
-        //
-    }
+        if ($user->role === 'Admin') {
+            return true;
+        }
 
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Course $course): bool
-    {
-        //
-    }
+        if ($user->role === 'Academic Head') {
+            // Allow delete if course is in draft or within 6 hours of publishing
+            return $course->status === 'draft' || ($course->status === 'publish' && $course->published_at->diffInHours(Carbon::now()) <= 6);
+        }
 
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Course $course): bool
-    {
-        //
+        return false;
     }
 }

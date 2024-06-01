@@ -5,9 +5,11 @@ use App\Http\Controllers\AuthController;
 
 Route::view('/', 'auth.login')->name('login');
 Route::POST('/', [AuthController::class, 'login']);
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::view('/dashboard', 'dashboard')->name('dashboard');
+Route::middleware('auth')->group(function () {
+    Route::view('/register', 'auth.register')->middleware('auth')->name('register');
+    Route::POST('/register', [AuthController::class, 'register']);
 
-Route::view('/register', 'auth.register')->name('register');
-Route::POST('/register', [AuthController::class, 'register']);
+    Route::view('/dashboard', 'dashboard')->middleware('auth')->name('dashboard');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+});

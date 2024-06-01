@@ -11,33 +11,39 @@
 
 <body>
     <header>
-        <header>
-            <nav class="navbar" style="background-color: #cccccc;">
-                <div>
-                    <h1 style="margin-left: 20px;">Learning Management System</h1>
-                </div>
-                @auth
-                    <div class="d-flex justify-content-end align-items-center" style="margin-right: 20px;">
-                        <div class="me-3">
-                            <h4 class="mb-0">
-                                {{ auth()->user()->name }} - {{ auth()->user()->role }}
-                            </h4>
-                        </div>
+        <nav class="navbar" style="background-color: #cccccc;">
+            <div>
+                <h1 style="margin-left: 20px;">Learning Management System</h1>
+            </div>
+            @auth
+                <div class="d-flex justify-content-end align-items-center" style="margin-right: 20px;">
+                    <div class="me-3">
+                        <a href="{{ route('dashboard') }}" class="btn btn-secondary">
+                            Dashboard
+                        </a>
+                    </div>
+                    <div class="col d-flex flex-column justify-content-center align-items-center">
                         <div>
+                            <h6 class="mb-0">
+                                {{ auth()->user()->name }} - {{ auth()->user()->role }}
+                            </h6>
+                        </div>
+                        <div class="mt-2">
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit" class="btn btn-primary">Logout</button>
                             </form>
                         </div>
                     </div>
-                @endauth
 
-            </nav>
-        </header>
+                </div>
+            @endauth
+        </nav>
+    </header>
 
-        <main>
-            @yield('content')
-        </main>
+    <main>
+        @yield('content')
+    </main>
 </body>
 
 </html>
