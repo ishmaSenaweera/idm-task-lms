@@ -16,16 +16,22 @@
                 <div>
                     <h1 style="margin-left: 20px;">Learning Management System</h1>
                 </div>
-                <div class="md-flex justify-content-end">
-                    <div style="margin-right: 20px">
-                        @auth
+                @auth
+                    <div class="d-flex justify-content-end align-items-center" style="margin-right: 20px;">
+                        <div class="me-3">
+                            <h4 class="mb-0">
+                                {{ auth()->user()->name }} - {{ auth()->user()->role }}
+                            </h4>
+                        </div>
+                        <div>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit" class="btn btn-primary">Logout</button>
                             </form>
-                        @endauth
+                        </div>
                     </div>
-                </div>
+                @endauth
+
             </nav>
         </header>
 

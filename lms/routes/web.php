@@ -7,7 +7,7 @@ Route::view('/', 'auth.login')->name('login');
 Route::POST('/', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::view('/home', 'home')->name('home');
+Route::view('/dashboard', 'dashboard')->name('dashboard');
 
 Route::view('/register', 'auth.register')->name('register');
 Route::POST('/register', [AuthController::class, 'register']);

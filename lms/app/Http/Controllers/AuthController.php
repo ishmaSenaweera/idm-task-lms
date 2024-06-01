@@ -21,7 +21,7 @@ class AuthController extends Controller
         // Login 
         if (Auth::attempt($fields, $request->remember)) {
 
-            return redirect(route('home'));
+            return redirect(route('dashboard'));
         } else {
 
             return back()->withErrors(['failed' => "Email or Password is Wrong!"]);
@@ -29,9 +29,18 @@ class AuthController extends Controller
     }
 
     // Logout user
-    public function logout()
+    public function logout(Request $request)
     {
+        // Logout
         Auth::logout();
+
+        // Invalidate user's session
+        $request->session()->invalidate();
+
+        // Regenerate CSRF token
+        $request->session()->regenerateToken();
+
+        // Redirect to login
         return redirect(route('login'));
     }
 
