@@ -1,16 +1,35 @@
 @extends('layouts.layout')
 
 @section('content')
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+
     <div class="container mt-5 mb-5">
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="card shadow-sm">
                     <div class="card-header text-center bg-primary text-white">
-                        <h2>Login</h2>
+                        <h2>Register User</h2>
                     </div>
                     <div class="card-body">
-                        <form method="POST" action="{{ route('login') }}">
+                        <form method="POST" action="{{ route('register') }}">
                             @csrf
+
+                            {{-- Name --}}
+                            <div class="form-group mb-3">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="name" name="name"
+                                    value="{{ old('name') }}">
+                                @if ($errors->has('name'))
+                                    <div class="text-danger mt-2">
+                                        {{ $errors->first('name') }}
+                                    </div>
+                                @endif
+                            </div>
 
                             {{-- Email --}}
                             <div class="form-group mb-3">
@@ -35,10 +54,18 @@
                                 @endif
                             </div>
 
-                            {{-- Remember Checkbox --}}
-                            <div class="form-group mb-4 form-check">
-                                <input type="checkbox" class="form-check-input" id="remember" name="remember">
-                                <label class="form-check-label" for="remember">Remember Me</label>
+                            {{-- Role --}}
+                            <div class="form-group mb-3">
+                                <label for="role">Role</label>
+                                <select class="form-control" id="role" name="role">
+                                    <option value="Teacher" {{ old('role') == 'Teacher' ? 'selected' : '' }}>Teacher
+                                    </option>
+                                    <option value="Student" {{ old('role') == 'Student' ? 'selected' : '' }}>Student
+                                    </option>
+                                    <option value="Academic Head" {{ old('role') == 'Academic Head' ? 'selected' : '' }}>
+                                        Academic Head</option>
+                                    <option value="Admin" {{ old('role') == 'Admin' ? 'selected' : '' }}>Admin</option>
+                                </select>
                             </div>
 
                             <div class="mb-4">
@@ -49,9 +76,9 @@
                                 @endif
                             </div>
 
-                            {{-- Login Button --}}
+                            {{-- Register Button --}}
                             <div class="d-grid gap-2 col-6 mx-auto">
-                                <button type="submit" class="btn btn-primary">Login</button>
+                                <button type="submit" class="btn btn-primary">Register</button>
                             </div>
                         </form>
                     </div>
