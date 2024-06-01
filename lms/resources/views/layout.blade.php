@@ -12,9 +12,19 @@
 <body>
     <header>
         <header>
-            <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #cccccc;">
+            <nav class="navbar" style="background-color: #cccccc;">
                 <div>
                     <h1 style="margin-left: 20px;">Learning Management System</h1>
+                </div>
+                <div class="md-flex justify-content-end">
+                    <div style="margin-right: 20px">
+                        @auth
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="btn btn-primary">Logout</button>
+                            </form>
+                        @endauth
+                    </div>
                 </div>
             </nav>
         </header>
