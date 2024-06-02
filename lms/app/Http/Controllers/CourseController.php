@@ -20,7 +20,7 @@ class CourseController extends Controller
         $this->authorize('view', Course::class);
 
         // Retrieve all courses in descending order
-        $courses = Course::orderBy('published_at', 'desc')->get();
+        $courses = Course::orderBy('created_at', 'desc')->get();
         return view('courses.index', ['courses' => $courses, 'user' => auth()->user()]);
     }
 

@@ -41,7 +41,7 @@
                             <th scope="col">SEO URL</th>
                             <th scope="col">Faculty</th>
                             <th scope="col">Category</th>
-                            @if ($user->role === 'Admin' || $user === 'Academic Head')
+                            @if ($user->role === 'Admin' || $user->role === 'Academic Head')
                                 <th scope="col">Status</th>
                             @endif
                             <th scope="col">Actions</th>
@@ -55,7 +55,7 @@
                                 <td>{{ $course->seo_url }}</td>
                                 <td>{{ $course->faculty }}</td>
                                 <td>{{ $course->category }}</td>
-                                @if ($user->role === 'Admin' || $user === 'Academic Head')
+                                @if ($user->role === 'Admin' || $user->role === 'Academic Head')
                                     @if ($course->status === 'Draft')
                                         <td style="color: blue">{{ $course->status }}</td>
                                     @else
