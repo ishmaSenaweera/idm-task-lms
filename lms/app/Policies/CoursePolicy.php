@@ -36,7 +36,7 @@ class CoursePolicy
 
         if ($user->role === 'Academic Head') {
             // Allow update if course is in draft or within 6 hours of publishing
-            return $course->status === 'Draft' || ($course->status === 'Published' && Carbon::parse($course->published_at)->lessThanOrEqualTo(Carbon::now()->subHours(6)));
+            return $course->status === 'Draft' || ($course->status === 'Published' && Carbon::parse($course->published_at)->greaterThanOrEqualTo(Carbon::now()->subHours(6)));
         }
         return false;
     }
