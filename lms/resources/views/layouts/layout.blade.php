@@ -22,11 +22,14 @@
                 <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                     @auth
                         <ul class="navbar-nav">
+                            {{-- Dashboard --}}
                             <li class="nav-item">
                                 <a class="nav-link btn btn-secondary me-3" href="{{ route('dashboard') }}">
                                     <b>Dashboard</b>
                                 </a>
                             </li>
+
+                            {{-- Name and logout --}}
                             <li class="nav-item dropdown">
                                 <button class="nav-link dropdown-toggle" id="navbarDropdown" data-bs-toggle="dropdown"
                                     aria-expanded="false" onKeyPress="handleKeyPress(event)"
@@ -37,6 +40,7 @@
                                     <li>
                                         <form method="POST" action="{{ route('logout') }}">
                                             @csrf
+                                            {{-- Logout button --}}
                                             <button type="submit" class="dropdown-item">Logout</button>
                                         </form>
                                     </li>

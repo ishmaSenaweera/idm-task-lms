@@ -8,23 +8,27 @@ Route::view('/', 'auth.login')->name('login');
 Route::POST('/', [AuthController::class, 'login']);
 
 Route::middleware('auth')->group(function () {
-    Route::view('/register', 'auth.register')->middleware('auth')->name('register');
-    Route::POST('/register', [AuthController::class, 'register']);
+    Route::view('/register', 'auth.register')->name('register');
+    Route::post('/register', [AuthController::class, 'register']);
 
-    Route::view('/dashboard', 'dashboard')->middleware('auth')->name('dashboard');
+    Route::view('/dashboard', 'dashboard')->name('dashboard');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    Route::get('/courses', [CourseController::class, 'index'])
-        ->name('courses.index')
-        ->middleware('can:view,App\Models\Course');
+    Route::get('/courses/all', [CourseController::class, 'index'])
+        ->name('courses.index');
 
-    // Route to show the form
+
+    // Route to show course form
     Route::get('/courses/create', [CourseController::class, 'create'])
-        ->name('courses.create')
-        ->middleware('can:create,App\Models\Course');
+        ->name('courses.create');
 
-    // Route to handle the form submission
+
+    // Route to handle course submission
     Route::post('/courses', [CourseController::class, 'store'])
-        ->name('courses.store')
-        ->middleware('can:create,App\Models\Course');
+        ->name('courses.store');
+
+
+    // Route to delete a course
+    Route::delete('/courses/{course}', [CourseController::class, 'destroy'])
+        ->name('courses.destroy');
 });

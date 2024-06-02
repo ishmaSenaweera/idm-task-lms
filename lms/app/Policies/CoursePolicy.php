@@ -6,7 +6,6 @@ use App\Models\Course;
 use App\Models\Module;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Auth\Access\Response;
 
 class CoursePolicy
 {
@@ -37,10 +36,8 @@ class CoursePolicy
 
         if ($user->role === 'Academic Head') {
             // Allow update if course is in draft or within 6 hours of publishing
-            return $course->status === 'draft' || ($course->status === 'publish' && $course->published_at->diffInHours(Carbon::now()) <= 6);
+            return $course->status === 'Draft' || ($course->status === 'Published' && Carbon::parse($course->published_at)->lessThanOrEqualTo(Carbon::now()->subHours(6)));
         }
-
-        return false;
     }
 
     /**
@@ -48,13 +45,14 @@ class CoursePolicy
      */
     public function delete(User $user, Course $course): bool
     {
+
         if ($user->role === 'Admin') {
-            return true;
+            return true; // Admin can always delete courses
         }
 
         if ($user->role === 'Academic Head') {
-            // Allow delete if course is in draft or within 6 hours of publishing
-            return $course->status === 'draft' || ($course->status === 'publish' && $course->published_at->diffInHours(Carbon::now()) <= 6);
+            // Allow delete if course is in draft
+            return $course->status === 'Draft';
         }
 
         return false;

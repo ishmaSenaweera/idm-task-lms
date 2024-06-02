@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 
 @section('content')
-    {{-- Success Message --}}
+    {{-- Success message --}}
     @if (session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
@@ -89,7 +89,7 @@
                                 @endif
                             </div>
 
-                            {{-- Faild Message --}}
+                            {{-- Faild message --}}
                             <div class="mb-4">
                                 @if ($errors->has('failed'))
                                     <div class="text-danger mt-2">
@@ -99,10 +99,10 @@
                             </div>
 
                             <div class="d-flex justify-content-end">
-                                {{-- Save Button --}}
+                                {{-- Save mutton --}}
                                 <button type="submit" class="btn btn-primary">Save</button>
 
-                                {{-- Cancel and Re-direct to Courses --}}
+                                {{-- Cancel and re-direct to courses --}}
                                 <a href="{{ route('courses.index') }}" class="btn btn-secondary ms-2">Cancel</a>
                             </div>
                         </form>

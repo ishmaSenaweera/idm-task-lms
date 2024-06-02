@@ -1,6 +1,20 @@
 @extends('layouts.layout')
 
 @section('content')
+    {{-- Success message --}}
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    {{-- Faild message --}}
+    @if ($errors->has('failed'))
+        <div class="alert alert-danger">
+            {{ $errors->first('failed') }}
+        </div>
+    @endif
+
     <div class="container">
         <h1 class="mb-4">Courses</h1>
 
@@ -39,15 +53,22 @@
                                 <td>{{ $course->seo_url }}</td>
                                 <td>{{ $course->faculty }}</td>
                                 <td>{{ $course->category }}</td>
-                                <td>{{ $course->status }}</td>
+                                @if ($course->status === 'Draft')
+                                    <td style="color: blue">{{ $course->status }}</td>
+                                @else
+                                    <td style="color: green">{{ $course->status }}</td>
+                                @endif
+
                                 <td>
                                     <div class="btn-group" aria-label="Course Actions">
-                                        <a href="{{ route('courses.show', $course->id) }}" class="btn btn-info">View</a>
+                                        {{-- <a href="{{ route('courses.show', $course->id) }}" class="btn btn-info">View</a>
                                         @can('update', $course)
                                             <a href="{{ route('courses.edit', $course->id) }}" class="btn btn-warning">Edit</a>
-                                        @endcan
+                                        @endcan --}}
+
                                         @can('delete', $course)
-                                            <form action="{{ route('courses.destroy', $course->id) }}" method="POST">
+                                            <!-- Delete button -->
+                                            <form action="{{ route('courses.destroy', $course) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger"

@@ -52,7 +52,7 @@ class AuthController extends Controller
             'name' => ['required'],
             'email' => ['required', 'email', 'unique:users'],
             'password' => ['required', 'min:6'],
-            'role' => ['required', Rule::in(['Admin,Teacher,Academic Head, Student'])]
+            'role' => ['required', Rule::in(['Admin', 'Teacher', 'Academic Head', 'Student'])]
         ]);
 
         try {
