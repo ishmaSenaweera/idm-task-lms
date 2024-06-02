@@ -1,12 +1,12 @@
 @extends('layouts.layout')
 
 @section('content')
+    {{-- Success Message --}}
     @if (session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
         </div>
     @endif
-
 
     <div class="container mt-5 mb-5">
         <div class="row justify-content-center">
@@ -57,7 +57,7 @@
                             {{-- Role --}}
                             <div class="form-group mb-3">
                                 <label for="role">Role</label>
-                                <select class="form-control" id="role" name="role">
+                                <select class="form-select" id="role" name="role">
                                     <option value="Teacher" {{ old('role') == 'Teacher' ? 'selected' : '' }}>Teacher
                                     </option>
                                     <option value="Student" {{ old('role') == 'Student' ? 'selected' : '' }}>Student
@@ -68,6 +68,7 @@
                                 </select>
                             </div>
 
+                            {{-- Faild Message --}}
                             <div class="mb-4">
                                 @if ($errors->has('failed'))
                                     <div class="text-danger mt-2">

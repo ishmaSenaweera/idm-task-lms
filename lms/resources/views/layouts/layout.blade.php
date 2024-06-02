@@ -11,39 +11,49 @@
 
 <body>
     <header>
-        <nav class="navbar" style="background-color: #cccccc;">
-            <div>
-                <h1 style="margin-left: 20px;">Learning Management System</h1>
-            </div>
-            @auth
-                <div class="d-flex justify-content-end align-items-center" style="margin-right: 20px;">
-                    <div class="me-3">
-                        <a href="{{ route('dashboard') }}" class="btn btn-secondary">
-                            Dashboard
-                        </a>
-                    </div>
-                    <div class="col d-flex flex-column justify-content-center align-items-center">
-                        <div>
-                            <h6 class="mb-0">
-                                {{ auth()->user()->name }} - {{ auth()->user()->role }}
-                            </h6>
-                        </div>
-                        <div class="mt-2">
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <button type="submit" class="btn btn-primary">Logout</button>
-                            </form>
-                        </div>
-                    </div>
-
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #dbdde0;">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#" style="font-size: 1.5rem; font-weight: bold;">Learning Management
+                    System</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                    @auth
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link btn btn-secondary me-3" href="{{ route('dashboard') }}">
+                                    <b>Dashboard</b>
+                                </a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <button class="nav-link dropdown-toggle" id="navbarDropdown" data-bs-toggle="dropdown"
+                                    aria-expanded="false" onKeyPress="handleKeyPress(event)"
+                                    onKeyDown="handleKeyDown(event)" onKeyUp="handleKeyUp(event)">
+                                    {{ auth()->user()->name }} - {{ auth()->user()->role }}
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <li>
+                                        <form method="POST" action="{{ route('logout') }}">
+                                            @csrf
+                                            <button type="submit" class="dropdown-item">Logout</button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    @endauth
                 </div>
-            @endauth
+            </div>
         </nav>
     </header>
 
-    <main>
+    <main class="container mt-4">
         @yield('content')
     </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

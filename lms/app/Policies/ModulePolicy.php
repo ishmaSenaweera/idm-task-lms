@@ -9,58 +9,34 @@ use Illuminate\Auth\Access\Response;
 class ModulePolicy
 {
     /**
-     * Determine whether the user can view any models.
+     * All users can view modules.
      */
-    public function viewAny(User $user): bool
+    public function view(User $user, Module $module)
     {
-        //
+        return in_array($user->role, ['Admin', 'Teacher', 'Academic Head', 'Student']);
     }
 
     /**
-     * Determine whether the user can view the model.
+     * Only admin or academic head can create a module.
      */
-    public function view(User $user, Module $module): bool
+    public function create(User $user)
     {
-        //
+        return in_array($user->role, ['Admin', 'Academic Head']);
     }
 
     /**
-     * Determine whether the user can create models.
+     * Only admin or academic head can update a module.
      */
-    public function create(User $user): bool
+    public function update(User $user, Module $module)
     {
-        //
+        return in_array($user->role, ['Admin', 'Academic Head']);
     }
 
     /**
-     * Determine whether the user can update the model.
+     * Only admin or academic head can delete a module.
      */
-    public function update(User $user, Module $module): bool
+    public function delete(User $user, Module $module)
     {
-        //
-    }
-
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, Module $module): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Module $module): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Module $module): bool
-    {
-        //
+        return in_array($user->role, ['Admin', 'Academic Head']);
     }
 }
