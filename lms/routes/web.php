@@ -22,13 +22,23 @@ Route::middleware('auth')->group(function () {
     Route::get('/courses/create', [CourseController::class, 'create'])
         ->name('courses.create');
 
-
     // Route to handle course submission
     Route::post('/courses', [CourseController::class, 'store'])
         ->name('courses.store');
 
-
     // Route to delete a course
     Route::delete('/courses/{course}', [CourseController::class, 'destroy'])
         ->name('courses.destroy');
+
+    // Route to show course edit form
+    Route::get('/courses/{course}/edit', [CourseController::class, 'edit'])
+        ->name('courses.edit');
+
+    // Route to handle course edit
+    Route::put('/courses/{course}', [CourseController::class, 'update'])
+        ->name('courses.update');
+
+    // Route to show modules details of a course
+    Route::get('/courses/{course}/modules', [CourseController::class, 'show'])
+        ->name('modules.show');
 });

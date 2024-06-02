@@ -38,10 +38,11 @@ class CoursePolicy
             // Allow update if course is in draft or within 6 hours of publishing
             return $course->status === 'Draft' || ($course->status === 'Published' && Carbon::parse($course->published_at)->lessThanOrEqualTo(Carbon::now()->subHours(6)));
         }
+        return false;
     }
 
     /**
-     * Admin can delete a course and academic head can delete in draft mode / if he published a course within 6 hours from published time.
+     * Admin can delete a course and academic head can delete in draft mode.
      */
     public function delete(User $user, Course $course): bool
     {

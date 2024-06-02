@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\Module;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -12,7 +13,7 @@ use Illuminate\Validation\Rule;
 class CourseController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the courses
      */
     public function index()
     {
@@ -24,7 +25,7 @@ class CourseController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new course
      */
     public function create()
     {
@@ -34,7 +35,7 @@ class CourseController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created course
      */
     public function store(Request $request)
     {
@@ -66,31 +67,56 @@ class CourseController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified course
      */
     public function show(Course $course)
     {
-        //
+        return view('modules.show', ['courses' => $course]);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified course
      */
     public function edit(Course $course)
     {
-        //
+        $this->authorize('update', $course);
+        return view('courses.edit', ['course' => $course, 'user' => auth()->user()]);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update a specified course
      */
     public function update(Request $request, Course $course)
+
     {
-        //
+        $this->authorize('update', $course);
+
+        $request->validate([
+            'name' => ['required'],
+            'seo_url' => ['required'],
+            'faculty' => ['required'],
+            'category' => ['required'],
+            'status' => ['required', Rule::in(['Draft', 'Published'])]
+        ]);
+
+        // Set value of 'published_at' based on the status
+        $publishedAt = $request->status === 'Published' ? Carbon::now() : null;
+
+        // Merge 'published_at' value into the request data
+        $newData = array_merge($request->all(), ['published_at' => $publishedAt]);
+
+        try {
+            // Update course
+            $course->update($newData);
+            return redirect(route('courses.index'))->with('success', 'Course Updated Successfully!');
+        } catch (\Exception $e) {
+
+            return back()->withErrors(['failed' => "Failed to Update Course. Please Try Again."]);
+        }
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove a specified course
      */
     public function destroy(Course $course)
     {
@@ -99,10 +125,10 @@ class CourseController extends Controller
 
         try {
             $course->delete();
-            return redirect()->route('courses.index')->with('success', 'Course Deleted Successfully!');
+            return back()->with('success', 'Course Deleted Successfully!');
         } catch (\Exception $e) {
 
-            return redirect()->route('courses.index')->withErrors(['failed' => "Failed to delete Course. Please Try Again."]);
+            return back()->withErrors(['failed' => "Failed to delete Course. Please Try Again."]);
         }
     }
 }

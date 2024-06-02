@@ -11,7 +11,7 @@ class ModulePolicy
     /**
      * All users can view modules.
      */
-    public function view(User $user, Module $module)
+    public function view(User $user)
     {
         return in_array($user->role, ['Admin', 'Teacher', 'Academic Head', 'Student']);
     }

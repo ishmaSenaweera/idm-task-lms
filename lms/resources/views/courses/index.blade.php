@@ -41,7 +41,9 @@
                             <th scope="col">SEO URL</th>
                             <th scope="col">Faculty</th>
                             <th scope="col">Category</th>
-                            <th scope="col">Status</th>
+                            @if ($user->role === 'Admin' || $user === 'Academic Head')
+                                <th scope="col">Status</th>
+                            @endif
                             <th scope="col">Actions</th>
                         </tr>
                     </thead>
@@ -53,18 +55,22 @@
                                 <td>{{ $course->seo_url }}</td>
                                 <td>{{ $course->faculty }}</td>
                                 <td>{{ $course->category }}</td>
-                                @if ($course->status === 'Draft')
-                                    <td style="color: blue">{{ $course->status }}</td>
-                                @else
-                                    <td style="color: green">{{ $course->status }}</td>
+                                @if ($user->role === 'Admin' || $user === 'Academic Head')
+                                    @if ($course->status === 'Draft')
+                                        <td style="color: blue">{{ $course->status }}</td>
+                                    @else
+                                        <td style="color: green">{{ $course->status }}</td>
+                                    @endif
                                 @endif
 
                                 <td>
                                     <div class="btn-group" aria-label="Course Actions">
-                                        {{-- <a href="{{ route('courses.show', $course->id) }}" class="btn btn-info">View</a>
+                                        <a href="{{ route('modules.show', $course->id) }}"
+                                            class="btn btn-info me-1">View</a>
                                         @can('update', $course)
-                                            <a href="{{ route('courses.edit', $course->id) }}" class="btn btn-warning">Edit</a>
-                                        @endcan --}}
+                                            <a href="{{ route('courses.edit', $course->id) }}"
+                                                class="btn btn-warning me-1">Edit</a>
+                                        @endcan
 
                                         @can('delete', $course)
                                             <!-- Delete button -->
