@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Module;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class ModulePolicy
 {
@@ -27,7 +26,7 @@ class ModulePolicy
     /**
      * Only admin or academic head can update a module.
      */
-    public function update(User $user, Module $module)
+    public function update(User $user)
     {
         return in_array($user->role, ['Admin', 'Academic Head']);
     }

@@ -3,11 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
-use App\Models\Module;
-use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class CourseController extends Controller
@@ -27,11 +24,11 @@ class CourseController extends Controller
     /**
      * Show the form for creating a new course
      */
-    public function create()
+    public function create(Course $course)
     {
         $this->authorize('create', Course::class);
 
-        return view('courses.create');
+        return view('courses.create', ['course' => $course]);
     }
 
     /**
@@ -71,7 +68,10 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
-        return view('modules.show', ['courses' => $course]);
+        // Get modules of the course
+        $modules = $course->modules;
+
+        return view('modules.show', ['course' => $course, 'modules' => $modules]);
     }
 
     /**
@@ -128,7 +128,7 @@ class CourseController extends Controller
             return back()->with('success', 'Course Deleted Successfully!');
         } catch (\Exception $e) {
 
-            return back()->withErrors(['failed' => "Failed to delete Course. Please Try Again."]);
+            return back()->withErrors(['failed' => "Failed to Delete Course. Please Try Again."]);
         }
     }
 }

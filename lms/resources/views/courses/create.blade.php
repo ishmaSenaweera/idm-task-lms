@@ -11,6 +11,7 @@
     <div class="container mt-5 mb-5">
         <div class="row justify-content-center">
             <div class="col-md-8">
+                <a href="{{ route('courses.index') }}">Go back to courses</a>
                 <div class="card shadow-sm">
                     <div class="card-header text-center bg-primary text-white">
                         <h4>Create New Course</h4>
