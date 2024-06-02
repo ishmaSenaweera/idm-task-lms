@@ -26,7 +26,6 @@ class CourseController extends Controller
             $courses = Course::where('status', 'published')->orderBy('created_at', 'desc')->get();
         }
 
-        // Pass the courses and user data to the view
         return view('courses.index', ['courses' => $courses, 'user' => auth()->user()]);
     }
 
@@ -78,8 +77,15 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
-        // Get modules of the course
-        $modules = $course->modules;
+
+        // Retrieve courses based on user's role
+        if (auth()->user()->role === 'Student') {
+            // Fetch only related modules according to student's batch year
+            $modules = $course->modules()->where('batch_year', auth()->user()->batch_year)->get();
+        } else {
+            // Get all modules of the course
+            $modules = $course->modules;
+        }
 
         return view('modules.show', ['course' => $course, 'modules' => $modules]);
     }

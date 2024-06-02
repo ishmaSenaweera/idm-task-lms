@@ -41,6 +41,7 @@
                             <th scope="col">Module Name</th>
                             <th scope="col">Module Code</th>
                             <th scope="col">Semester</th>
+                            <th scope="col">Batch Year</th>
                             <th scope="col">Credits</th>
                             @if (auth()->user()->role === 'Admin' || auth()->user()->role === 'Academic Head')
                                 <th scope="col">Description</th>
@@ -55,6 +56,7 @@
                                 <td>{{ $module->code }}</td>
                                 <td>{{ $module->name }}</td>
                                 <td>{{ $module->semester }}</td>
+                                <td>{{ $module->batch_year }}</td>
                                 <td>{{ $module->credits }}</td>
                                 @if (auth()->user()->role === 'Admin' || auth()->user()->role === 'Academic Head')
                                     <td>{{ $module->description }}</td>

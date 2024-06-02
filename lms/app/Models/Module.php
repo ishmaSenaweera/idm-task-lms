@@ -20,6 +20,7 @@ class Module extends Model
         'name',
         'semester',
         'description',
+        'batch_year',
         'credits'
     ];
 

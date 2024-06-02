@@ -33,6 +33,7 @@ class ModuleController extends Controller
             'name'  => ['required', 'max:255'],
             'semester'  => ['required'],
             'description' => ['max:255'],
+            'batch_year' => ['required'],
             'credits'  => ['required', 'integer']
         ]);
 
@@ -67,6 +68,7 @@ class ModuleController extends Controller
             'name'  => ['required', 'max:255'],
             'semester'  => ['required'],
             'description' => ['max:255'],
+            'batch_year' => ['required'],
             'credits'  => ['required', 'integer']
         ]);
 

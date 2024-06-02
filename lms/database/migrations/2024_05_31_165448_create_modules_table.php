@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->integer('semester');
             $table->string('description')->nullable();
+            $table->unsignedSmallInteger('batch_year')->nullable();
             $table->integer('credits');
             $table->timestamps();
         });

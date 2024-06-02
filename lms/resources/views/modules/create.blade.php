@@ -75,6 +75,18 @@
                                 @endif
                             </div>
 
+                            {{-- Batch year --}}
+                            <div class="form-group mb-3">
+                                <label for="batch_year" class="form-label">Batch Year</label>
+                                <input type="text" class="form-control" id="batch_year" name="batch_year"
+                                    value="{{ old('batch_year') }}">
+                                @if ($errors->has('batch_year'))
+                                    <div class="text-danger mt-2">
+                                        {{ $errors->first('batch_year') }}
+                                    </div>
+                                @endif
+                            </div>
+
                             {{-- Credits --}}
                             <div class="mb-3">
                                 <label for="credits" class="form-label">Credits</label>
