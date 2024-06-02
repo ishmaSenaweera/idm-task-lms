@@ -14,12 +14,22 @@ class CourseController extends Controller
      */
     public function index()
     {
-        $this->authorize('view', Course::class);
+        // Check the user's role
+        $userRole = auth()->user()->role;
 
-        // Retrieve all courses in descending order
-        $courses = Course::orderBy('created_at', 'desc')->get();
+        // Retrieve courses based on user's role
+        if ($userRole === 'Admin' || $userRole === 'Academic Head') {
+            // Fetch all courses
+            $courses = Course::orderBy('created_at', 'desc')->get();
+        } else {
+            // Fetch only published courses for teachers and students
+            $courses = Course::where('status', 'published')->orderBy('created_at', 'desc')->get();
+        }
+
+        // Pass the courses and user data to the view
         return view('courses.index', ['courses' => $courses, 'user' => auth()->user()]);
     }
+
 
     /**
      * Show the form for creating a new course
