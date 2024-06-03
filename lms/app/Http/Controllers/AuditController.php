@@ -2,17 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Audit as ModelsAudit;
 use App\Models\Course;
 use App\Models\Module;
 use App\Models\User;
 use OwenIt\Auditing\Models\Audit;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 
 class AuditController extends Controller
 {
     public function index()
     {
+
+        // Authorize the user to view audits
+        $this->authorize('view', ModelsAudit::class);
+
         // Retrieve audits for User, Course, and Module models
         $userAudits = Audit::where('auditable_type', User::class)->get() ?? collect();
         $courseAudits = Audit::where('auditable_type', Course::class)->get() ?? collect();
@@ -23,11 +27,15 @@ class AuditController extends Controller
             'userAudits' => $userAudits,
             'courseAudits' => $courseAudits,
             'moduleAudits' => $moduleAudits,
+            'user' => auth()->user()->role
+
         ]);
     }
 
     public function export()
     {
+        $this->authorize('download', Audit::class);
+
         $audits = Audit::all();
 
         $csvData = [];

@@ -2,10 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\Audit;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Gate;
 use App\Models\Course;
 use App\Models\Module;
+use App\Policies\AuditPolicy;
 use App\Policies\CoursePolicy;
 use App\Policies\ModulePolicy;
 
@@ -19,6 +20,7 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         Course::class => CoursePolicy::class,
         Module::class => ModulePolicy::class,
+        Audit::class => AuditPolicy::class
     ];
 
     /**
@@ -29,6 +31,5 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-      
     }
 }

@@ -15,6 +15,15 @@
                             </div>
                         </div>
                     </div>
+                    {{-- Audit management --}}
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                                <h5 class="card-title mb-3">Audit Management</h5>
+                                <a href="{{ route('audit.index') }}" class="btn btn-primary">Go to Audit Management</a>
+                            </div>
+                        </div>
+                    </div>
                 @endif
                 {{-- Course Management --}}
                 <div class="col-md-6 mb-4">
