@@ -30,3 +30,7 @@ This guide will help you clone and set up the project on your local machine usin
 ## Start the Development Server
 1. Run the following command to start the Laravel development server: `php artisan serve`
 2. Open your web browser and navigate to `http://localhost:8000` to see your Laravel application running.
+
+## Admin Login
+- Username: admin@gmail.com
+- Password: 123@admin
