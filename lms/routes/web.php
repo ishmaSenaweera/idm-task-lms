@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuditController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CourseController;
@@ -64,4 +65,12 @@ Route::middleware('auth')->group(function () {
     // Route to delete a module
     Route::delete('/courses/{course}/{module}', [ModuleController::class, 'destroy'])
         ->name('modules.destroy');
+
+    // Route to view audits
+    Route::get('/audit', [AuditController::class, 'index'])
+        ->name('audit.index');
+
+    // Route to export audits
+    Route::get('/audit/export', [AuditController::class, 'export'])
+        ->name('audit.export');
 });
