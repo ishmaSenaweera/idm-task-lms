@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
-use App\Models\modules;
-use Illuminate\Http\Request;
 use App\Models\Module;
+use Illuminate\Http\Request;
 
 class ModuleController extends Controller
 {
@@ -51,6 +50,8 @@ class ModuleController extends Controller
      */
     public function edit(Course $course, Module $module)
     {
+        $this->authorize('update', $module);
+
         // Pass the $course and $module to the view
         return view('modules.edit', ['course' =>  $course, 'module' => $module]);
     }

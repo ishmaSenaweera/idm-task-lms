@@ -9,11 +9,13 @@ Route::view('/', 'auth.login')->name('login');
 Route::POST('/', [AuthController::class, 'login']);
 
 Route::middleware('auth')->group(function () {
-    Route::view('/register', 'auth.register')->name('register');
+    Route::view('/register', 'auth.register')
+        ->name('register');
     Route::post('/register', [AuthController::class, 'register']);
 
     Route::view('/dashboard', 'dashboard')->name('dashboard');
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::post('/logout', [AuthController::class, 'logout'])
+        ->name('logout');
 
     Route::get('/courses/all', [CourseController::class, 'index'])
         ->name('courses.index');
@@ -43,11 +45,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/courses/{course}/modules', [CourseController::class, 'show'])
         ->name('modules.show');
 
-    // Route to show course form
-    Route::get('/courses/{course}/modules/create', [ModuleController::class, 'create'])->name('modules.create');
+    // Route to show module form
+    Route::get('/courses/{course}/modules/create', [ModuleController::class, 'create'])
+        ->name('modules.create');
 
     // Route to handle module submission
-    Route::post('/courses/{course}/modules', [ModuleController::class, 'store'])->name('modules.store');
+    Route::post('/courses/{course}/modules', [ModuleController::class, 'store'])
+        ->name('modules.store');
 
     // Route to show module edit form
     Route::get('/courses/{course}/{module}/edit', [ModuleController::class, 'edit'])

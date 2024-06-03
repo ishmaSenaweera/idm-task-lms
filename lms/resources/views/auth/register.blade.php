@@ -69,7 +69,8 @@
                             </div>
 
                             {{-- Batch year --}}
-                            <div class="form-group mb-3">
+                            <div class="form-group mb-3" id="batch_year_field"
+                                style="{{ old('role') === 'Student' && $errors->has('batch_year') ? 'display: block;' : 'display: none;' }}">
                                 <label for="batch_year" class="form-label">Batch Year</label>
                                 <input type="text" class="form-control" id="batch_year" name="batch_year"
                                     value="{{ old('batch_year') }}">
@@ -99,4 +100,18 @@
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var roleSelect = document.getElementById('role');
+            var batchYearField = document.getElementById('batch_year_field');
+
+            roleSelect.addEventListener('change', function() {
+                if (roleSelect.value === 'Student') {
+                    batchYearField.style.display = 'block';
+                } else {
+                    batchYearField.style.display = 'none';
+                }
+            });
+        });
+    </script>
 @endsection
