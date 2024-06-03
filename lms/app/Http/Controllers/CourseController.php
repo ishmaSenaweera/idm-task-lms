@@ -14,6 +14,8 @@ class CourseController extends Controller
      */
     public function index()
     {
+        // return Course::with('audits')->get();
+
         // Check the user's role
         $userRole = auth()->user()->role;
 
