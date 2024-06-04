@@ -37,7 +37,6 @@
                 <table class="table table-bordered">
                     <thead class="thead-dark">
                         <tr>
-                            <th scope="col">ID</th>
                             <th scope="col">Module Name</th>
                             <th scope="col">Module Code</th>
                             <th scope="col">Semester</th>
@@ -52,7 +51,6 @@
                     <tbody>
                         @foreach ($modules as $module)
                             <tr>
-                                <td>{{ $module->id }}</td>
                                 <td>{{ $module->code }}</td>
                                 <td>{{ $module->name }}</td>
                                 <td>{{ $module->semester }}</td>

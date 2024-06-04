@@ -36,7 +36,6 @@
                 <table class="table table-bordered">
                     <thead class="thead-dark">
                         <tr>
-                            <th scope="col">ID</th>
                             <th scope="col">Name</th>
                             <th scope="col">SEO URL</th>
                             <th scope="col">Faculty</th>
@@ -50,7 +49,6 @@
                     <tbody>
                         @foreach ($courses as $course)
                             <tr>
-                                <td>{{ $course->id }}</td>
                                 <td>{{ $course->name }}</td>
                                 <td>{{ $course->seo_url }}</td>
                                 <td>{{ $course->faculty }}</td>
