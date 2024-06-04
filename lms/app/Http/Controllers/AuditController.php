@@ -34,7 +34,7 @@ class AuditController extends Controller
 
     public function export()
     {
-        $this->authorize('download', Audit::class);
+        $this->authorize('download', ModelsAudit::class);
 
         $audits = Audit::all();
 
