@@ -4,8 +4,10 @@
     <div class="container-fluid">
         <div class="card-body">
             <div class="row justify-content-center align-items-center vh-100">
+
                 {{-- Show both components only to admin if not admin show course management only --}}
-                @if (auth()->user()->role === 'Admin')
+
+                @if (auth()->user()->hasRole('Admin'))
                     {{-- User management --}}
                     <div class="col-md-6 mb-4">
                         <div class="card h-100 shadow-sm">
@@ -15,6 +17,7 @@
                             </div>
                         </div>
                     </div>
+
                     {{-- Audit management --}}
                     <div class="col-md-6 mb-4">
                         <div class="card h-100 shadow-sm">
@@ -25,6 +28,7 @@
                         </div>
                     </div>
                 @endif
+
                 {{-- Course Management --}}
                 <div class="col-md-6 mb-4">
                     <div class="card h-100 shadow-sm">

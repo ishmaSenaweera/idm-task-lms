@@ -10,9 +10,9 @@ Route::view('/', 'auth.login')->name('login');
 Route::POST('/', [AuthController::class, 'login']);
 
 Route::middleware('auth')->group(function () {
-    Route::view('/register', 'auth.register')
-        ->name('register');
-    Route::post('/register', [AuthController::class, 'register']);
+    Route::get('/register', [AuthController::class, 'index'])
+        ->name('auth.register');
+    Route::post('/register', [AuthController::class, 'register'])->name('auth.register.submit');
 
     Route::view('/dashboard', 'dashboard')->name('dashboard');
     Route::post('/logout', [AuthController::class, 'logout'])

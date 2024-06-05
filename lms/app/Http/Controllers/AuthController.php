@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use PhpOption\None;
+use Spatie\Permission\Models\Role;
 
 class AuthController extends Controller
 {
@@ -44,6 +46,14 @@ class AuthController extends Controller
         return redirect(route('login'));
     }
 
+    // View register form
+    public function index()
+    {
+        $roles = Role::all();
+
+        return view('auth.register', ['roles' => $roles]);
+    }
+
     // Register new user
     public function register(Request $request)
     {
@@ -53,7 +63,7 @@ class AuthController extends Controller
             'name' => ['required'],
             'email' => ['required', 'email', 'unique:users'],
             'password' => ['required', 'min:6'],
-            'role' => ['required', Rule::in(['Admin', 'Teacher', 'Academic Head', 'Student'])]
+            'role' => ['required']
         ];
 
         // Add batch year validation only if the role is Student
@@ -62,12 +72,19 @@ class AuthController extends Controller
         }
 
         // Validate the request
-        $validated = $request->validate($rules);
+        $request->validate($rules);
 
         try {
 
             // Register
-            User::create($validated);
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => $request->password,
+                'batch_year' => $request->batch_year ? $request->batch_year : null,
+            ]);
+            $user->assignRole($request->role);
+
             return back()->with('success', 'User Registered Successfully!');
         } catch (\Exception $e) {
 

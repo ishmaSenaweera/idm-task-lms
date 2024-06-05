@@ -34,7 +34,7 @@
                                 <button class="nav-link dropdown-toggle" id="navbarDropdown" data-bs-toggle="dropdown"
                                     aria-expanded="false" onKeyPress="handleKeyPress(event)"
                                     onKeyDown="handleKeyDown(event)" onKeyUp="handleKeyUp(event)">
-                                    {{ auth()->user()->name }} - {{ auth()->user()->role }}
+                                    {{ auth()->user()->name }} - {{ auth()->user()->getRoleNames()->first() }}
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <li>

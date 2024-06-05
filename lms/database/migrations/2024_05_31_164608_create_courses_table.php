@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('seo_url')->unique();
             $table->string('faculty');
             $table->string('category');
-            $table->enum('status', ['Draft', 'Published'])->default('Draft');
+            $table->enum('status', ['draft', 'publish'])->default('draft');
             $table->timestamp('published_at')->nullable();
             $table->timestamps();
         });

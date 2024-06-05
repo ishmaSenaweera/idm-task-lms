@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->enum('role', ['Admin', 'Teacher', 'Academic Head', 'Student']);
             $table->unsignedSmallInteger('batch_year')->nullable();
             $table->rememberToken();
             $table->timestamps();

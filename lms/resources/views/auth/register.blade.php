@@ -16,7 +16,7 @@
                         <h2>Register User</h2>
                     </div>
                     <div class="card-body">
-                        <form method="POST" action="{{ route('register') }}">
+                        <form method="POST" action="{{ route('auth.register.submit') }}">
                             @csrf
 
                             {{-- Name --}}
@@ -57,14 +57,11 @@
                             {{-- Role --}}
                             <div class="form-group mb-3">
                                 <label for="role">Role</label>
-                                <select class="form-select" id="role" name="role">
-                                    <option value="Teacher" {{ old('role') == 'Teacher' ? 'selected' : '' }}>Teacher
-                                    </option>
-                                    <option value="Student" {{ old('role') == 'Student' ? 'selected' : '' }}>Student
-                                    </option>
-                                    <option value="Academic Head" {{ old('role') == 'Academic Head' ? 'selected' : '' }}>
-                                        Academic Head</option>
-                                    <option value="Admin" {{ old('role') == 'Admin' ? 'selected' : '' }}>Admin</option>
+                                <select class="form-select" id='role' name="role">
+                                    @foreach ($roles as $role)
+                                        <option value="{{ $role->name }}"
+                                            {{ old('role') == $role->name ? 'selected' : '' }}>{{ $role->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
 
