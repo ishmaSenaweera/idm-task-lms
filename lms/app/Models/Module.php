@@ -20,10 +20,7 @@ class Module extends Model implements Auditable
     protected $fillable = [
         'code',
         'name',
-        'semester',
-        'description',
-        'batch_year',
-        'credits'
+        'description'
     ];
 
     public function courseModules()

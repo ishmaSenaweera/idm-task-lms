@@ -16,20 +16,9 @@ class CourseController extends Controller
      */
     public function index()
     {
-        /** @var App\Models\User */
 
-        // Get the authenticated user
-        $user = auth()->user();
-
-        // Retrieve courses based on user's role
-        if ($user->hasRole('Admin') || $user->hasRole('Academic Head')) {
-            // Fetch all courses
-            $courses = Course::orderBy('created_at', 'desc')->get();
-        } else {
-            // Fetch only published courses for teachers and students
-            $courses = Course::where('status', 'publish')->orderBy('created_at', 'desc')->get();
-        }
-
+        // Fetch all courses
+        $courses = Course::orderBy('created_at', 'desc')->get();
         return view('courses.index', ['courses' => $courses]);
     }
 
@@ -37,9 +26,9 @@ class CourseController extends Controller
     /**
      * Show the form for creating a new course
      */
-    public function create(Course $course)
+    public function create()
     {
-        return view('courses.create', ['course' => $course]);
+        return view('courses.create');
     }
 
     /**
@@ -68,24 +57,6 @@ class CourseController extends Controller
 
             return back()->withErrors(['failed' => "Failed to Create New Course. Please Try Again."]);
         }
-    }
-
-    /**
-     * Display the specified course
-     */
-    public function show(Course $course)
-    {
-
-        // Retrieve courses based on user's role
-        if (auth()->user()->role === 'Student') {
-            // Fetch only related modules according to student's batch year
-            $modules = $course->modules()->where('batch_year', auth()->user()->batch_year)->get();
-        } else {
-            // Get all modules of the course
-            $modules = $course->modules;
-        }
-
-        return view('modules.show', ['course' => $course, 'modules' => $modules]);
     }
 
     /**
@@ -120,7 +91,7 @@ class CourseController extends Controller
         $fields = array_merge($request->all(), ['published_at' => $publishedAt]);
 
         try {
-            
+
             // Check if the user is an Academic Head 
             if ($user->hasRole('Academic Head')) {
 

@@ -8,16 +8,23 @@
         </div>
     @endif
 
+    {{-- Faild message --}}
+    @if ($errors->has('failed'))
+        <div class="alert alert-danger">
+            {{ $errors->first('failed') }}
+        </div>
+    @endif
+
     <div class="container mt-5 mb-5">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <a href="{{ route('modules.show', $course) }}">Go back to modules</a>
+                <a href="{{ route('modules.index') }}">Go back to modules</a>
                 <div class="card shadow-sm">
                     <div class="card-header text-center bg-primary text-white">
                         <h4>Edit Module</h4>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('modules.update', [$course, $module]) }}" method="POST">
+                        <form action="{{ route('modules.update', $module) }}" method="POST">
                             @csrf
                             @method('PUT')
 
@@ -45,25 +52,6 @@
                                 @endif
                             </div>
 
-                            {{-- Semester --}}
-                            <div class="mb-3">
-                                <label for="semester" class="form-label">Semester</label>
-                                <select class="form-select" id="semester" name="semester">
-                                    <option value="1" {{ $module->semester == '1' ? 'selected' : '' }}>
-                                        1</option>
-                                    <option value="2" {{ $module->semester == '2' ? 'selected' : '' }}>
-                                        2</option>
-                                    <option value="3" {{ $module->semester == '3' ? 'selected' : '' }}>3
-                                    <option value="4" {{ $module->semester == '4' ? 'selected' : '' }}>4
-                                    </option>
-                                </select>
-                                @if ($errors->has('semester'))
-                                    <div class="text-danger mt-2">
-                                        {{ $errors->first('semester') }}
-                                    </div>
-                                @endif
-                            </div>
-
                             {{-- Description --}}
                             <div class="mb-3">
                                 <label for="description" class="form-label">Description</label>
@@ -75,45 +63,12 @@
                                 @endif
                             </div>
 
-                            {{-- Batch year --}}
-                            <div class="form-group mb-3">
-                                <label for="batch_year" class="form-label">Batch Year</label>
-                                <input type="text" class="form-control" id="batch_year" name="batch_year"
-                                    value="{{ $module->batch_year }}">
-                                @if ($errors->has('batch_year'))
-                                    <div class="text-danger mt-2">
-                                        {{ $errors->first('batch_year') }}
-                                    </div>
-                                @endif
-                            </div>
-
-                            {{-- Credits --}}
-                            <div class="mb-3">
-                                <label for="credits" class="form-label">Credits</label>
-                                <input type="number" class="form-control" id="credits" name="credits"
-                                    value="{{ $module->credits }}" min="1">
-                                @if ($errors->has('credits'))
-                                    <div class="text-danger mt-2">
-                                        {{ $errors->first('credits') }}
-                                    </div>
-                                @endif
-                            </div>
-
-                            {{-- Faild message --}}
-                            <div class="mb-4">
-                                @if ($errors->has('failed'))
-                                    <div class="text-danger mt-2">
-                                        {{ $errors->first('failed') }}
-                                    </div>
-                                @endif
-                            </div>
-
                             <div class="d-flex justify-content-end">
-                                {{-- Update mutton --}}
+                                {{-- Update button --}}
                                 <button type="submit" class="btn btn-primary">Update</button>
 
                                 {{-- Cancel and re-direct to courses --}}
-                                <a href="{{ route('courses.index') }}" class="btn btn-secondary ms-2">Cancel</a>
+                                <a href="{{ route('modules.index') }}" class="btn btn-secondary ms-2">Cancel</a>
                             </div>
                         </form>
                     </div>

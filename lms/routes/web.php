@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ModuleController;
+use App\Http\Controllers\SyllabusController;
 
 Route::view('/', 'auth.login')->name('login');
 Route::POST('/', [AuthController::class, 'login']);
@@ -13,14 +14,6 @@ Route::middleware('auth')->group(function () {
     Route::view('/dashboard', 'dashboard')->name('dashboard');
     Route::post('/logout', [AuthController::class, 'logout'])
         ->name('logout');
-
-    // Route to view courses
-    Route::get('/courses/all', [CourseController::class, 'index'])
-        ->name('courses.index');
-
-    // Route to show modules details of a course
-    Route::get('/courses/{course}/modules', [CourseController::class, 'show'])
-        ->name('modules.show');
 });
 
 Route::middleware(['auth', 'role:Admin'])->group(function () {
@@ -59,22 +52,58 @@ Route::middleware(['auth', 'role:Admin|Academic Head'])->group(function () {
         ->name('courses.update');
 
     // Route to show module form
-    Route::get('/courses/{course}/modules/create', [ModuleController::class, 'create'])
+    Route::get('/modules/create', [ModuleController::class, 'create'])
         ->name('modules.create');
 
     // Route to handle module submission
-    Route::post('/courses/{course}/modules', [ModuleController::class, 'store'])
+    Route::post('/modules', [ModuleController::class, 'store'])
         ->name('modules.store');
 
     // Route to show module edit form
-    Route::get('/courses/{course}/{module}/edit', [ModuleController::class, 'edit'])
+    Route::get('/modules/{module}/edit', [ModuleController::class, 'edit'])
         ->name('modules.edit');
 
     // Route to handle module update
-    Route::put('/courses/{course}/{module}', [ModuleController::class, 'update'])
+    Route::put('/modules/{module}', [ModuleController::class, 'update'])
         ->name('modules.update');
 
     // Route to delete a module
-    Route::delete('/courses/{course}/{module}', [ModuleController::class, 'destroy'])
+    Route::delete('/modules/{module}', [ModuleController::class, 'destroy'])
         ->name('modules.destroy');
+
+    // Route to show syllabus form
+    Route::get('/syllabi/create', [SyllabusController::class, 'create'])
+        ->name('syllabi.create');
+
+    // Route to handle syllabus submission
+    Route::post('/syllabi', [SyllabusController::class, 'store'])
+        ->name('syllabi.store');
+
+    // Route to show syllabus edit form
+    Route::get('/syllabi/{syllabus}/edit', [SyllabusController::class, 'edit'])
+        ->name('syllabi.edit');
+
+    // Route to handle syllabus update
+    Route::put('/syllabi/{syllabus}', [SyllabusController::class, 'update'])
+        ->name('syllabi.update');
+
+    // Route to delete a syllabus
+    Route::delete('/syllabi/{syllabus}', [SyllabusController::class, 'destroy'])
+        ->name('syllabi.destroy');
+});
+
+Route::middleware(['auth', 'role:Admin|Academic Head|Teacher'])->group(function () {
+    // Route to view courses
+    Route::get('/courses/all', [CourseController::class, 'index'])
+        ->name('courses.index');
+
+    // Route to view modules
+    Route::get('/modules/all', [ModuleController::class, 'index'])
+        ->name('modules.index');
+});
+
+Route::middleware(['auth', 'role:Admin|Academic Head|Teacher|Student'])->group(function () {
+    // Route to view syllabus
+    Route::get('/syllabi/all', [SyllabusController::class, 'index'])
+        ->name('syllabi.index');
 });

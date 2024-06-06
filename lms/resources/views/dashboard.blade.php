@@ -34,7 +34,10 @@
                     <div class="card h-100 shadow-sm">
                         <div class="card-body d-flex flex-column justify-content-center align-items-center">
                             <h5 class="card-title mb-3">Course Management</h5>
-                            <a href="{{ route('courses.index') }}" class="btn btn-primary">Go to Course Management</a>
+                            @role('Admin|Academic Head|Teacher')
+                                <a href="{{ route('courses.index') }}" class="btn btn-primary">Go to Course Management</a>
+                            @endrole
+                            <a href="{{ route('syllabi.index') }}" class="btn btn-primary">Go to Course Management</a>
                         </div>
                     </div>
                 </div>

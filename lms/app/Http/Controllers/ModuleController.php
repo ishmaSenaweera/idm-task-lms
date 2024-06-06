@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\CourseModule;
 use App\Models\Module;
 use Illuminate\Http\Request;
 
@@ -10,35 +11,40 @@ class ModuleController extends Controller
 {
 
     /**
+     * Display a listing of the modules
+     */
+    public function index()
+    {
+        // Fetch all modules
+        $modules = Module::orderBy('created_at', 'desc')->get();
+        return view('modules.index', ['modules' => $modules]);
+    }
+
+    /**
      * Show the form for creating a new module
      */
-    public function create(Course $course)
+    public function create()
     {
-        $this->authorize('create', Module::class);
-
-        return view('modules.create', ['course' => $course]);
+        return view('modules.create');
     }
 
     /**
      * Store a newly created module
      */
-    public function store(Request $request, Course $course)
+    public function store(Request $request,)
     {
-        $this->authorize('create', Module::class);
 
         // Validate module
         $fields = $request->validate([
-            'code' => ['required', 'max:10'],
+            'code' => ['required', 'max:10', 'unique:modules,code'],
             'name'  => ['required', 'max:255'],
-            'semester'  => ['required'],
-            'description' => ['max:255'],
-            'batch_year' => ['required'],
-            'credits'  => ['required', 'integer']
+            'description' => ['max:255']
         ]);
 
         try {
-            // Save module
-            $course->modules()->create($fields);
+
+            // Save module in module table
+            Module::create($fields);
             return back()->with('success', 'New Module Created Successfully!');
         } catch (\Exception $e) {
             return back()->withErrors(['failed' => "Failed to Create New Course. Please Try Again."]);
@@ -48,32 +54,28 @@ class ModuleController extends Controller
     /**
      * Show the form for editing the specified module
      */
-    public function edit(Course $course, Module $module)
+    public function edit(Module $module)
     {
-        $this->authorize('update', $module);
 
-        // Pass the $course and $module to the view
-        return view('modules.edit', ['course' =>  $course, 'module' => $module]);
+        // Pass the module to the view
+        return view('modules.edit', ['module' => $module]);
     }
 
     /**
      * Update the specified module
      */
-    public function update(Request $request, Course $course, Module $module)
+    public function update(Request $request, Module $module)
     {
-        $this->authorize('update', $module);
 
         // Validate module
         $fields = $request->validate([
             'code' => ['required', 'max:10'],
             'name'  => ['required', 'max:255'],
-            'semester'  => ['required'],
             'description' => ['max:255'],
-            'batch_year' => ['required'],
-            'credits'  => ['required', 'integer']
         ]);
 
         try {
+
             // Update the module with the validated data
             $module->update($fields);
 
@@ -86,13 +88,12 @@ class ModuleController extends Controller
     /**
      * Remove the specified module
      */
-    public function destroy(Course $course, Module $module)
+    public function destroy(Module $module)
     {
-        $this->authorize('delete', $module); // Authorize the delete action for the module
 
         try {
-            $module->delete(); // Delete the module
 
+            $module->delete(); // Delete the module
             return back()->with('success', 'Module Deleted Successfully!');
         } catch (\Exception $e) {
             return back()->withErrors(['failed' => "Failed to Delete Module. Please Try Again."]);
