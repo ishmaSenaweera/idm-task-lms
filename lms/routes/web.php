@@ -10,18 +10,34 @@ Route::view('/', 'auth.login')->name('login');
 Route::POST('/', [AuthController::class, 'login']);
 
 Route::middleware('auth')->group(function () {
-    Route::get('/register', [AuthController::class, 'index'])
-        ->name('auth.register');
-    Route::post('/register', [AuthController::class, 'register'])->name('auth.register.submit');
-
     Route::view('/dashboard', 'dashboard')->name('dashboard');
     Route::post('/logout', [AuthController::class, 'logout'])
         ->name('logout');
 
+    // Route to view courses
     Route::get('/courses/all', [CourseController::class, 'index'])
         ->name('courses.index');
 
+    // Route to show modules details of a course
+    Route::get('/courses/{course}/modules', [CourseController::class, 'show'])
+        ->name('modules.show');
+});
 
+Route::middleware(['auth', 'role:Admin'])->group(function () {
+    Route::get('/register', [AuthController::class, 'index'])
+        ->name('auth.register');
+    Route::post('/register', [AuthController::class, 'register'])->name('auth.register.submit');
+
+    // Route to view audits
+    Route::get('/audit', [AuditController::class, 'index'])
+        ->name('audit.index');
+
+    // Route to export audits
+    Route::get('/audit/export', [AuditController::class, 'export'])
+        ->name('audit.export');
+});
+
+Route::middleware(['auth', 'role:Admin|Academic Head'])->group(function () {
     // Route to show course form
     Route::get('/courses/create', [CourseController::class, 'create'])
         ->name('courses.create');
@@ -42,10 +58,6 @@ Route::middleware('auth')->group(function () {
     Route::put('/courses/{course}', [CourseController::class, 'update'])
         ->name('courses.update');
 
-    // Route to show modules details of a course
-    Route::get('/courses/{course}/modules', [CourseController::class, 'show'])
-        ->name('modules.show');
-
     // Route to show module form
     Route::get('/courses/{course}/modules/create', [ModuleController::class, 'create'])
         ->name('modules.create');
@@ -65,12 +77,4 @@ Route::middleware('auth')->group(function () {
     // Route to delete a module
     Route::delete('/courses/{course}/{module}', [ModuleController::class, 'destroy'])
         ->name('modules.destroy');
-
-    // Route to view audits
-    Route::get('/audit', [AuditController::class, 'index'])
-        ->name('audit.index');
-
-    // Route to export audits
-    Route::get('/audit/export', [AuditController::class, 'export'])
-        ->name('audit.export');
 });
