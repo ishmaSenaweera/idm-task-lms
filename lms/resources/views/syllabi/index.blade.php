@@ -1,7 +1,9 @@
 @extends('layouts.layout')
 
 @section('content')
-    @include('layouts.tab')
+    @role('Admin|Academic Head|Teacher')
+        @include('layouts.tab')
+    @endrole
 
     {{-- Success message --}}
     @if (session('success'))
