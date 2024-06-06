@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+
 use Illuminate\Validation\Rule;
 
 class CourseController extends Controller
@@ -14,13 +15,12 @@ class CourseController extends Controller
      */
     public function index()
     {
-        // return Course::with('audits')->get();
-
-        // Check the user's role
-        $userRole = auth()->user()->role;
+        /** @var App\Models\User */
+        // Get the authenticated user
+        $user = auth()->user();
 
         // Retrieve courses based on user's role
-        if ($userRole === 'Admin' || $userRole === 'Academic Head') {
+        if ($user->hasRole('Admin') || $user->hasRole('Academic Head')) {
             // Fetch all courses
             $courses = Course::orderBy('created_at', 'desc')->get();
         } else {
@@ -28,7 +28,7 @@ class CourseController extends Controller
             $courses = Course::where('status', 'published')->orderBy('created_at', 'desc')->get();
         }
 
-        return view('courses.index', ['courses' => $courses, 'user' => auth()->user()]);
+        return view('courses.index', ['courses' => $courses]);
     }
 
 
@@ -37,7 +37,6 @@ class CourseController extends Controller
      */
     public function create(Course $course)
     {
-        $this->authorize('create', Course::class);
 
         return view('courses.create', ['course' => $course]);
     }
@@ -48,7 +47,7 @@ class CourseController extends Controller
     public function store(Request $request)
     {
 
-        $this->authorize('create', Course::class);
+
 
         $request->validate([
             'name' => ['required'],
@@ -97,7 +96,7 @@ class CourseController extends Controller
      */
     public function edit(Course $course)
     {
-        $this->authorize('update', $course);
+
         return view('courses.edit', ['course' => $course, 'user' => auth()->user()]);
     }
 
@@ -107,7 +106,7 @@ class CourseController extends Controller
     public function update(Request $request, Course $course)
 
     {
-        $this->authorize('update', $course);
+
 
         $request->validate([
             'name' => ['required'],
@@ -139,7 +138,7 @@ class CourseController extends Controller
     public function destroy(Course $course)
     {
 
-        $this->authorize('delete', $course);
+
 
         try {
             $course->delete();

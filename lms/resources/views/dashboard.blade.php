@@ -13,7 +13,7 @@
                         <div class="card h-100 shadow-sm">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h5 class="card-title mb-3">User Management</h5>
-                                <a href="{{ route('register') }}" class="btn btn-primary">Go to User Management</a>
+                                <a href="{{ route('auth.register') }}" class="btn btn-primary">Go to User Management</a>
                             </div>
                         </div>
                     </div>

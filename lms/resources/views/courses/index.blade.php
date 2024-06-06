@@ -18,12 +18,13 @@
     <div class="container">
         <h1 class="mb-4">Courses</h1>
 
-        <!-- Add Course button visible only to authorized roles (Admin & Academic Head) -->
-        @can('create', App\Models\Course::class)
+        <!-- Add Course button visible only to users with the 'admin' or 'academic_head' role -->
+        @role('Admin|Academic Head')
             <div class="mb-3">
                 <a href="{{ route('courses.create') }}" class="btn btn-primary">Add Course</a>
             </div>
-        @endcan
+        @endrole
+
 
         <!-- Display a message if there are no courses -->
         @if ($courses->isEmpty())

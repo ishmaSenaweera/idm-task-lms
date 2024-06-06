@@ -14,9 +14,17 @@ class UserRoleSeeder extends Seeder
     public function run(): void
     {
         // get user with ID of 1 (Admin)
-        $user = User::find(1);
+        $adminUser = User::find(1);
+        $academicHeadUser = User::find(2);
+        $teacherUser = User::find(3);
+        $std1User = User::find(4);
+        $std2User = User::find(5);
 
         // Assign roles to the user
-        $user->syncRoles('Admin');
+        $adminUser->syncRoles('Admin');
+        $academicHeadUser->syncRoles('Academic Head');
+        $teacherUser->syncRoles('Teacher');
+        $std1User->syncRoles('Student');
+        $std2User->syncRoles('Student');
     }
 }

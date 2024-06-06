@@ -58,31 +58,19 @@ class AuthController extends Controller
     public function register(Request $request)
     {
 
-        // User validation rules
-        $rules = [
-            'name' => ['required'],
-            'email' => ['required', 'email', 'unique:users'],
-            'password' => ['required', 'min:6'],
-            'role' => ['required']
-        ];
-
-        // Add batch year validation only if the role is Student
-        if ($request->role === 'Student') {
-            $rules['batch_year'] = ['required', 'integer', 'min:1900', 'max:' . date('Y')];
-        }
-
         // Validate the request
-        $request->validate($rules);
+        $fields = $request->validate(
+            [
+                'name' => ['required'],
+                'email' => ['required', 'email', 'unique:users'],
+                'password' => ['required', 'min:6'],
+            ]
+        );
 
         try {
 
             // Register
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => $request->password,
-                'batch_year' => $request->batch_year ? $request->batch_year : null,
-            ]);
+            $user = User::create($fields);
             $user->assignRole($request->role);
 
             return back()->with('success', 'User Registered Successfully!');
