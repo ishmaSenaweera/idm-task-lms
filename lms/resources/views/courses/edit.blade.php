@@ -8,6 +8,13 @@
         </div>
     @endif
 
+    {{-- Faild message --}}
+    @if ($errors->has('failed'))
+        <div class="alert alert-danger">
+            {{ $errors->first('failed') }}
+        </div>
+    @endif
+
     <div class="container mt-5 mb-5">
         <div class="row justify-content-center">
             <div class="col-md-8">
@@ -37,12 +44,7 @@
                             <div class="mb-3">
                                 <label for="seo_url" class="form-label">SEO URL</label>
                                 <input type="text" class="form-control" id="seo_url" name="seo_url"
-                                    value="{{ $course->seo_url }}">
-                                @if ($errors->has('seo_url'))
-                                    <div class="text-danger mt-2">
-                                        {{ $errors->first('seo_url') }}
-                                    </div>
-                                @endif
+                                    value="{{ $course->seo_url }}" disabled>
                             </div>
 
                             {{-- Faculty --}}
@@ -79,10 +81,9 @@
                             <div class="mb-3">
                                 <label for="status" class="form-label">Status</label>
                                 <select class="form-select" id="status" name="status">
-                                    <option value="Draft" {{ $course->status == 'Draft' ? 'selected' : '' }}>
+                                    <option value="draft" {{ $course->status == 'draft' ? 'selected' : '' }}>
                                         Draft</option>
-                                    <option value="Published" {{ $course->status == 'Published' ? 'selected' : '' }}>
-                                        Published
+                                    <option value="publish" {{ $course->status == 'publish' ? 'selected' : '' }}>Publish
                                     </option>
                                 </select>
                                 @if ($errors->has('status'))
@@ -92,17 +93,8 @@
                                 @endif
                             </div>
 
-                            {{-- Faild message --}}
-                            <div class="mb-4">
-                                @if ($errors->has('failed'))
-                                    <div class="text-danger mt-2">
-                                        {{ $errors->first('failed') }}
-                                    </div>
-                                @endif
-                            </div>
-
                             <div class="d-flex justify-content-end">
-                                {{-- Update mutton --}}
+                                {{-- Update button --}}
                                 <button type="submit" class="btn btn-primary">Update</button>
 
                                 {{-- Cancel and re-direct to courses --}}

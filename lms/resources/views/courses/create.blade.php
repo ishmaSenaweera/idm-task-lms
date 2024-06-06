@@ -8,6 +8,13 @@
         </div>
     @endif
 
+    {{-- Faild message --}}
+    @if ($errors->has('failed'))
+        <div class="alert alert-danger">
+            {{ $errors->first('failed') }}
+        </div>
+    @endif
+
     <div class="container mt-5 mb-5">
         <div class="row justify-content-center">
             <div class="col-md-8">
@@ -28,18 +35,6 @@
                                 @if ($errors->has('name'))
                                     <div class="text-danger mt-2">
                                         {{ $errors->first('name') }}
-                                    </div>
-                                @endif
-                            </div>
-
-                            {{-- SEO URL --}}
-                            <div class="mb-3">
-                                <label for="seo_url" class="form-label">SEO URL</label>
-                                <input type="text" class="form-control" id="seo_url" name="seo_url"
-                                    value="{{ old('seo_url') }}">
-                                @if ($errors->has('seo_url'))
-                                    <div class="text-danger mt-2">
-                                        {{ $errors->first('seo_url') }}
                                     </div>
                                 @endif
                             </div>
@@ -78,23 +73,14 @@
                             <div class="mb-3">
                                 <label for="status" class="form-label">Status</label>
                                 <select class="form-select" id="status" name="status">
-                                    <option value="Draft" {{ old('status') == 'Draft' ? 'selected' : '' }}>
+                                    <option value="draft" {{ old('status') == 'draft' ? 'selected' : '' }}>
                                         Draft</option>
-                                    <option value="Published" {{ old('status') == 'Published' ? 'selected' : '' }}>Publish
+                                    <option value="publish" {{ old('status') == 'publish' ? 'selected' : '' }}>Publish
                                     </option>
                                 </select>
                                 @if ($errors->has('status'))
                                     <div class="text-danger mt-2">
                                         {{ $errors->first('status') }}
-                                    </div>
-                                @endif
-                            </div>
-
-                            {{-- Faild message --}}
-                            <div class="mb-4">
-                                @if ($errors->has('failed'))
-                                    <div class="text-danger mt-2">
-                                        {{ $errors->first('failed') }}
                                     </div>
                                 @endif
                             </div>

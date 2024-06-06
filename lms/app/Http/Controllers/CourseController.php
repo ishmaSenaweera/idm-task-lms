@@ -10,12 +10,14 @@ use Illuminate\Validation\Rule;
 
 class CourseController extends Controller
 {
+
     /**
      * Display a listing of the courses
      */
     public function index()
     {
         /** @var App\Models\User */
+
         // Get the authenticated user
         $user = auth()->user();
 
@@ -25,7 +27,7 @@ class CourseController extends Controller
             $courses = Course::orderBy('created_at', 'desc')->get();
         } else {
             // Fetch only published courses for teachers and students
-            $courses = Course::where('status', 'published')->orderBy('created_at', 'desc')->get();
+            $courses = Course::where('status', 'publish')->orderBy('created_at', 'desc')->get();
         }
 
         return view('courses.index', ['courses' => $courses]);
@@ -37,7 +39,6 @@ class CourseController extends Controller
      */
     public function create(Course $course)
     {
-
         return view('courses.create', ['course' => $course]);
     }
 
@@ -46,26 +47,22 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-
-
-
         $request->validate([
             'name' => ['required'],
-            'seo_url' => ['required', 'unique:courses'],
             'faculty' => ['required'],
             'category' => ['required'],
-            'status' => ['required', Rule::in(['Draft', 'Published'])]
+            'status' => ['required']
         ]);
 
         // Set value of 'published_at' based on the status
-        $publishedAt = $request->status === 'Published' ? Carbon::now() : null;
+        $publishedAt = $request->status === 'publish' ? Carbon::now() : null;
 
         // Merge 'published_at' value into the request data
-        $newData = array_merge($request->all(), ['published_at' => $publishedAt]);
+        $fields = array_merge($request->all(), ['published_at' => $publishedAt]);
 
         try {
             // Save course
-            Course::create($newData);
+            Course::create($fields);
             return back()->with('success', 'New Course Created Successfully!');
         } catch (\Exception $e) {
 
@@ -96,35 +93,50 @@ class CourseController extends Controller
      */
     public function edit(Course $course)
     {
-
-        return view('courses.edit', ['course' => $course, 'user' => auth()->user()]);
+        return view('courses.edit', ['course' => $course]);
     }
 
     /**
      * Update a specified course
      */
     public function update(Request $request, Course $course)
-
     {
+        /** @var App\Models\User */
 
+        // Get the authenticated user
+        $user = auth()->user();
 
         $request->validate([
             'name' => ['required'],
-            'seo_url' => ['required'],
             'faculty' => ['required'],
             'category' => ['required'],
-            'status' => ['required', Rule::in(['Draft', 'Published'])]
+            'status' => ['required']
         ]);
 
         // Set value of 'published_at' based on the status
-        $publishedAt = $request->status === 'Published' ? Carbon::now() : null;
+        $publishedAt = $request->status === 'publish' ? Carbon::now() : null;
 
         // Merge 'published_at' value into the request data
-        $newData = array_merge($request->all(), ['published_at' => $publishedAt]);
+        $fields = array_merge($request->all(), ['published_at' => $publishedAt]);
 
         try {
+            
+            // Check if the user is an Academic Head 
+            if ($user->hasRole('Academic Head')) {
+
+                // Check if the course is in draft mode or published within 6 hours 
+                if ($course->status === 'draft' || ($course->status === 'publish' && Carbon::parse($course->published_at)->addHours(6)->gt(Carbon::now()))) {
+                    // Update course
+                    $course->update($fields);
+                    return redirect(route('courses.index'))->with('success', 'Course Updated Successfully!');
+                } else {
+                    // If not in draft mode or published longer than 6 hours ago, only admin can update
+                    return back()->withErrors(['failed' => "You Can't Update this Course."]);
+                }
+            }
+
             // Update course
-            $course->update($newData);
+            $course->update($fields);
             return redirect(route('courses.index'))->with('success', 'Course Updated Successfully!');
         } catch (\Exception $e) {
 
@@ -137,10 +149,26 @@ class CourseController extends Controller
      */
     public function destroy(Course $course)
     {
+        /** @var App\Models\User */
 
-
+        // Get the authenticated user
+        $user = auth()->user();
 
         try {
+
+            // heck if the user is an Academic Head 
+            if ($user->hasRole('Academic Head')) {
+
+                // Check if the course is in draft mode
+                if ($course->status === 'draft') {
+                    $course->delete();
+                    return back()->with('success', 'Course Deleted Successfully!');
+                } else {
+
+                    return back()->withErrors(['failed' => "Can't Delete Published Course."]);
+                }
+            }
+
             $course->delete();
             return back()->with('success', 'Course Deleted Successfully!');
         } catch (\Exception $e) {
