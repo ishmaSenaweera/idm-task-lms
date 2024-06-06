@@ -26,8 +26,8 @@ class Module extends Model implements Auditable
         'credits'
     ];
 
-    public function course(): BelongsTo
+    public function courseModules()
     {
-        return $this->belongsTo(Course::class);
+        return $this->hasMany(CourseModule::class, 'module_id');
     }
 }

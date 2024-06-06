@@ -26,8 +26,20 @@ class Course extends Model implements Auditable
         'published_at'
     ];
 
-    public function modules(): HasMany
+    public function courseModules()
     {
-        return $this->hasMany(Module::class);
+        return $this->hasMany(CourseModule::class, 'course_id');
+    }
+
+    public function studentCourses()
+    {
+        return $this->hasMany(StudentCourse::class, 'course_id');
+    }
+
+    public function students()
+    {
+        return $this->belongsToMany(User::class, 'student_courses', 'course_id', 'user_id')
+            ->withPivot('enrollment_year')
+            ->withTimestamps();
     }
 }

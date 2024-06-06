@@ -45,4 +45,16 @@ class User extends Authenticatable implements Auditable
             'password' => 'hashed',
         ];
     }
+
+    public function studentCourses()
+    {
+        return $this->hasMany(StudentCourse::class, 'student_id');
+    }
+
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class, 'student_courses', 'student_id', 'course_id')
+            ->withPivot('enrollment_year')
+            ->withTimestamps();
+    }
 }
