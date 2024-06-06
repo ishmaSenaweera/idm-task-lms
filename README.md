@@ -22,8 +22,7 @@
      - id
      - code
      - name
-     - semester
-     - batch_year
+     - semester   
      - credit
 
 4. **Dynamic Syllabus Display:**
