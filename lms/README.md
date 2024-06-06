@@ -25,12 +25,18 @@ This guide will help you clone and set up the project on your local machine usin
 ## Run Migrations and Seeders
 
 1. Run the following command to migrate the database tables: `php artisan migrate`
-2. Seed the admin user data: `php artisan db:seed --class=AdminSeeder`
+2. Seed users' data: `php artisan db:seed --class=UsersSeeder`
+3. Seed user roles and permissions: `artisan db:seed --class=RolesAndPermissionSeeder` and
+   `php artisan db:seed --class=UserRoleSeeder`
+4. After creating few courses, edit and use StudentAndCourseSeeder accordingly to seed students to courses using:
+   `php artisan db:seed --class=StudentAndCourseSeeder`
 
 ## Start the Development Server
+
 1. Run the following command to start the Laravel development server: `php artisan serve`
 2. Open your web browser and navigate to `http://localhost:8000` to see your Laravel application running.
 
 ## Admin Login
-- Username: admin@gmail.com
-- Password: 123@admin
+
+-   Username: admin@gmail.com
+-   Password: 123@admin
