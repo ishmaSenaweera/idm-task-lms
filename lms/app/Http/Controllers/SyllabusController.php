@@ -20,7 +20,7 @@ class SyllabusController extends Controller
 
         if ($user->hasRole('Student')) {
             // Retrieve the user's courses and their enrollment years
-            $enrollmentYears = $user->studentCourses->pluck('enrollment_year')->unique();
+            $enrollmentYears = $user->courses->pluck('pivot.enrollment_year')->unique();
 
             // Retrieve syllabi related to the user's batch years
             $syllabi = CourseModule::with(['course', 'module'])
